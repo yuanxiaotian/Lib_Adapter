@@ -22,7 +22,13 @@ public abstract class CMMAdapter<T> extends RecyclerView.Adapter<CMMViewHolder> 
 
     private List<T> mData;
     private int mLayoutId;
+
     private View mHeaderView;
+    private View mFootView;
+
+    private boolean isHasHeader = false;
+    private boolean isFooter = false;
+
     private boolean noMoreData = true;
     private OnItemClick onItemClickListener;
 
@@ -44,25 +50,51 @@ public abstract class CMMAdapter<T> extends RecyclerView.Adapter<CMMViewHolder> 
     @NonNull
     @Override
     public CMMViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (mHeaderView != null && viewType == BASE_ITEM_TYPE_HEADER) {
+        if (viewType == BASE_ITEM_TYPE_FOOTER)
+            return new CMMViewHolder(mFootView);
+        if (viewType == BASE_ITEM_TYPE_HEADER)
             return new CMMViewHolder(mHeaderView);
-        }
-        return CMMViewHolder.get(parent, mLayoutId);
+        else
+            return CMMViewHolder.get(parent, mLayoutId);
     }
 
 
     @Override
     public int getItemViewType(int position) {
-        if (mHeaderView == null) return BASE_ITEM_TYPE_NOT;
-        if (position == 0) return BASE_ITEM_TYPE_HEADER;
-        return BASE_ITEM_TYPE_NOT;
+        if (isHasHeader && position == 0)
+            return BASE_ITEM_TYPE_HEADER;
+        if (isHasHeader && isFooter && position == getData().size() + 1)
+            return BASE_ITEM_TYPE_FOOTER;
+        if (!isHasHeader && isFooter && position == getData().size())
+            return BASE_ITEM_TYPE_FOOTER;
+        else
+            return BASE_ITEM_TYPE_NOT;
     }
 
     @Override
     public void onBindViewHolder(@NonNull CMMViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        if (getItemViewType(position) == BASE_ITEM_TYPE_HEADER) return;
         final int pos = getRealPosition(holder);
-        convert(holder, mData.get(pos), pos);
+        if (isFooter && isHasHeader) {
+            if (position == 0 && position == getData().size() + 1)
+                return;
+            else
+                convert(holder, mData.get(pos), pos - 1);
+        }
+
+        if (position != 0 && isHasHeader && !isFooter) {
+            convert(holder, mData.get(pos), pos - 1);
+        }
+
+        if (!isHasHeader && isFooter) {
+            if (position == getData().size()) return;
+            convert(holder, mData.get(pos), pos);
+        }
+
+        if(!isHasHeader&&!isFooter){
+            convert(holder, mData.get(pos), pos);
+        }
+
+
         if (onItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -83,7 +115,6 @@ public abstract class CMMAdapter<T> extends RecyclerView.Adapter<CMMViewHolder> 
     @SuppressWarnings("all")
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
         if (manager instanceof GridLayoutManager) {
             final GridLayoutManager gridManager = ((GridLayoutManager) manager);
@@ -225,7 +256,8 @@ public abstract class CMMAdapter<T> extends RecyclerView.Adapter<CMMViewHolder> 
     @Override
     public void addHeadView(View view) {
         mHeaderView = view;
-        notifyItemChanged(0);
+        isHasHeader = true;
+        notifyDataSetChanged();
     }
 
     /**
@@ -233,8 +265,9 @@ public abstract class CMMAdapter<T> extends RecyclerView.Adapter<CMMViewHolder> 
      */
     @Override
     public void addFootView(View view) {
-        mHeaderView = view;
-        notifyItemChanged(mData.size() + 1);
+        mFootView = view;
+        isFooter = true;
+        notifyDataSetChanged();
     }
 
     public boolean isNoMoreData() {
