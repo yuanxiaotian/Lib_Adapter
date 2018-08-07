@@ -132,7 +132,10 @@ public abstract class CMMAdapter<T> extends RecyclerView.Adapter<CMMViewHolder> 
 
     @Override
     public int getItemCount() {
-        int size = getData().size();
+        int size = 0;
+        if (getData() != null) {
+            size = getData().size();
+        }
         if (isHasHeader)
             size++;
         if (isHasFooter)
