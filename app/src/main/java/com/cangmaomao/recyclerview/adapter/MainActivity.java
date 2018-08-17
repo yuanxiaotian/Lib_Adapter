@@ -4,7 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
@@ -33,8 +35,9 @@ public class MainActivity extends AppCompatActivity {
             adater.addData("存" + i);
         }
 
+        View view =    LayoutInflater.from(this).inflate(R.layout.item_activity_main_head, recyclerView, false);
 
-        adater.addHeadView(R.layout.item_activity_main_head);
+        adater.addHeadView(view);
 
     }
 }

@@ -9,13 +9,13 @@ public interface HeadAndFootViewContract {
     /**
      * 添加头部
      */
-    void addHeadView(int view);
+    void addHeadView(View view);
 
 
     /**
      * 添加底部
      */
-    void addFootView(int view);
+    void addFootView(View view);
 
     /**
      * 获取ViewHolder 添加过head的pos

@@ -8,13 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.cangmaomao.recyclerview.adapter.contract.ViewHolderContract;
 
 
 public class CMMViewHolder extends RecyclerView.ViewHolder implements ViewHolderContract {
 
     //定义SparseArray 存储View
-
 
 
     private SparseArray<View> viewSparseArray = null;
@@ -39,6 +39,10 @@ public class CMMViewHolder extends RecyclerView.ViewHolder implements ViewHolder
     public static CMMViewHolder get(ViewGroup parent, int layoutId) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
         return new CMMViewHolder(itemView, parent);
+    }
+
+    public static CMMViewHolder get(ViewGroup parent, View view) {
+        return new CMMViewHolder(view, parent);
     }
 
     /**
