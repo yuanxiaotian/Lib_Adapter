@@ -18,25 +18,23 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
-        ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            list.add("存" + i);
-        }
-
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        TestAdater adater = new TestAdater(R.layout.item_activity_main, list);
+        TestAdater adater = new TestAdater(R.layout.item_activity_main);
 
 
         recyclerView.setAdapter(adater);
 
 
-        View view = View.inflate(this, R.layout.item_activity_main_foot, null);
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            adater.addData("存" + i);
+        }
 
-        adater.addHeadView(view);
 
-        adater.addFootView(view);
+        adater.addHeadView(R.layout.item_activity_main_head);
+
     }
 }

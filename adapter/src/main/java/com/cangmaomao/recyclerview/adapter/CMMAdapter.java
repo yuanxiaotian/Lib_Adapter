@@ -24,8 +24,8 @@ public abstract class CMMAdapter<T> extends RecyclerView.Adapter<CMMViewHolder> 
     private List<T> mData;
     private int mLayoutId;
 
-    private View mHeaderView;
-    private View mFootView;
+    private int mHeaderView;
+    private int mFootView;
 
     private boolean isHasHeader = false;
     private boolean isHasFooter = false;
@@ -52,9 +52,9 @@ public abstract class CMMAdapter<T> extends RecyclerView.Adapter<CMMViewHolder> 
     @Override
     public CMMViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == BASE_ITEM_TYPE_FOOTER)
-            return new CMMViewHolder(mFootView);
+            return CMMViewHolder.get(parent, mFootView);
         if (viewType == BASE_ITEM_TYPE_HEADER)
-            return new CMMViewHolder(mHeaderView);
+            return CMMViewHolder.get(parent, mHeaderView);
         else
             return CMMViewHolder.get(parent, mLayoutId);
     }
@@ -109,7 +109,7 @@ public abstract class CMMAdapter<T> extends RecyclerView.Adapter<CMMViewHolder> 
     @Override
     public int getRealPosition(RecyclerView.ViewHolder holder) {
         int position = holder.getLayoutPosition();
-        return mHeaderView == null ? position : position - 1;
+        return mHeaderView == 0 ? position : position - 1;
     }
 
     @Override
@@ -267,7 +267,7 @@ public abstract class CMMAdapter<T> extends RecyclerView.Adapter<CMMViewHolder> 
      * 添加头部
      */
     @Override
-    public void addHeadView(View view) {
+    public void addHeadView(int view) {
         mHeaderView = view;
         isHasHeader = true;
         notifyDataSetChanged();
@@ -277,7 +277,7 @@ public abstract class CMMAdapter<T> extends RecyclerView.Adapter<CMMViewHolder> 
      * 添加底部
      */
     @Override
-    public void addFootView(View view) {
+    public void addFootView(int view) {
         mFootView = view;
         isHasFooter = true;
         notifyDataSetChanged();

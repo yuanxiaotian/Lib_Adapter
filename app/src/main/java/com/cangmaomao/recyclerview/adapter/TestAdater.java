@@ -5,8 +5,8 @@ import java.util.List;
 public class TestAdater extends CMMAdapter<String> {
 
 
-    public TestAdater(int layoutId, List<String> mData) {
-        super(layoutId, mData);
+    public TestAdater(int layoutId) {
+        super(layoutId);
     }
 
     @Override
