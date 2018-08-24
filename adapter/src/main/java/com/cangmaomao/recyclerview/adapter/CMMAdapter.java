@@ -192,6 +192,22 @@ public abstract class CMMAdapter<T> extends RecyclerView.Adapter<CMMViewHolder> 
         }
     }
 
+    @Override
+    public void set(List<T> t) {
+        if (mData == null) {
+            mData = new ArrayList<>();
+            mData.addAll(t);
+            notifyDataSetChanged();
+            return;
+        }
+        if (t != null && t.size() > 0) {
+            mData.clear();
+            mData.addAll(t);
+            notifyDataSetChanged();
+        }
+
+    }
+
     /**
      * 加入数据data
      */

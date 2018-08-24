@@ -50,4 +50,7 @@ public interface AdapterContract<T> {
      */
     Object getData();
 
+
+    void set(List<T> t);
+
 }
