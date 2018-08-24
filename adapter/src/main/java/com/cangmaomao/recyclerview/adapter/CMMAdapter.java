@@ -152,7 +152,8 @@ public abstract class CMMAdapter<T> extends RecyclerView.Adapter<CMMViewHolder> 
     @Override
     public void addList(List<T> t) {
         if (mData == null) {
-            mData = t;
+            mData = new ArrayList<>();
+            mData.addAll(t);
             notifyDataSetChanged();
             return;
         }
@@ -179,7 +180,8 @@ public abstract class CMMAdapter<T> extends RecyclerView.Adapter<CMMViewHolder> 
     @Override
     public void addAllList(List<T> t) {
         if (mData == null) {
-            mData = t;
+            mData = new ArrayList<>();
+            mData.addAll(t);
             notifyDataSetChanged();
             return;
         }
